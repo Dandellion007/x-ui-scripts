@@ -25,7 +25,7 @@ function step_create_command() {
 }
 ```
 Это сделано, т.к. по каким-то причинам wget запросы к gitlab.com с vps получают ответ 302.  
-Сделал форк от устаревшего репозитория Warp и добавил туда файл [install_warp_proxy.sh](https://github.com/Dandellion007/x-ui-scripts/blob/main/install_warp_proxy.sh) из актуального репозитоия.
+Сделал форк от устаревшего репозитория Warp и добавил туда файл [menu.sh](https://github.com/Dandellion007/warp/blob/main/menu.sh) из актуального репозитоия.
 
 # Install Warp (on socks5 proxy) for 3x-ui
 ```
