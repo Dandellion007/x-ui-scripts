@@ -1,75 +1,28 @@
-# x-ui-scripts
-
-This repository contains some useful scripts for x-ui and 3x-ui.
-
-# Scripts
-
-## Manual Build [3x-ui](https://github.com/MHSanaei/3x-ui)
-
-```sh
-bash <(curl -sSL https://raw.githubusercontent.com/hamid-gh98/x-ui-scripts/main/build_3x-ui.sh)
+# Пояснение
+В скрипте [install_warp_proxy.sh](https://github.com/hamid-gh98/x-ui-scripts/blob/main/install_warp_proxy.sh) из main репозитоирия изменена одна строка.  
+было
 ```
-
-## Install [Warp](https://gitlab.com/fscarmen/warp) (on socks5 proxy) for 3x-ui
-
-```sh
-bash <(curl -sSL https://raw.githubusercontent.com/Dandellion007/x-ui-scripts/refs/heads/main/install_warp_proxy.sh)
+function step_create_command() {
+  {
+    mkdir -p /etc/wireguard
+    wget -N -P /etc/wireguard https://gitlab.com/fscarmen/warp/-/raw/main/menu.sh
+    chmod +x /etc/wireguard/menu.sh
+    ln -sf /etc/wireguard/menu.sh /usr/bin/warp
+  }
+  [[ $? -ne 0 ]] && STEP_STATUS=0
+}
 ```
-
-### options
-
-- `-y` => Accept default values
-- `-f` => Force reinstall Warp Socks5 Proxy (WireProxy)
-
-### commands
-
-- `warp u` => Uninstall Warp
-- `warp a` => Change Warp Account Type (free, plus, etc.)
-- `warp y` => Turn on/off WireProxy
-
-### Notes
-
-- **To use IPv4 for routing warp:**
-  1. Go to Panel > Settings > Xray Configurations > Complete Template
-  2. Find the object with tag `WARP` in outbounds:
-     ```json
-     {
-       "tag": "WARP",
-       "protocol": "socks",
-       "settings": {
-         "servers": [
-           {
-             "address": "127.0.0.1",
-             "port": 40000
-           }
-         ]
-       }
-     }
-     ```
-  3. Replace it with the following json object:
-     ```json
-     {
-       "tag": "WARP-socks5",
-       "protocol": "socks",
-       "settings": {
-         "servers": [
-           {
-             "address": "127.0.0.1",
-             "port": 40000
-           }
-         ]
-       }
-     },
-     {
-       "tag":"WARP",
-       "protocol":"freedom",
-       "proxySettings":{
-         "tag":"WARP-socks5"
-       },
-       "settings":{
-         "domainStrategy":"UseIPv4"
-       }
-     }
-     ```
-- **To use IPv6 for routing warp:**
-  - Follow the same steps as for IPv4, replacing `UseIPv4` with `UseIPv6`
+стало
+```
+function step_create_command() {
+  {
+    mkdir -p /etc/wireguard
+    wget -N -P /etc/wireguard https://raw.githubusercontent.com/Dandellion007/warp/refs/heads/main/menu.sh
+    chmod +x /etc/wireguard/menu.sh
+    ln -sf /etc/wireguard/menu.sh /usr/bin/warp
+  }
+  [[ $? -ne 0 ]] && STEP_STATUS=0
+}
+```
+Это сделано, т.к. по каким-то причинам wget запросы к gitlab.com с vps получают ответ 302.  
+Сделал форк от устаревшего репозитория Warp и добавил туда файл [install_warp_proxy.sh](https://github.com/Dandellion007/x-ui-scripts/blob/main/install_warp_proxy.sh) из актуального репозитоия.
